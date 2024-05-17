@@ -11,13 +11,13 @@ contract PodfiPodcast is PausableUpgradeable, ReentrancyGuardUpgradeable {
 
   struct Podcast {
     address creator;
-    creator creatorIceCandidates;
+    string creatorIceCandidates;
     PodcastStatus status;
     mapping(address => string) listenerIceCandidate;
+    address[] listeners; // To keep track of listeners
   }
 
   Podcast[] public podcasts;
-
   mapping(address => bool) public admins;
 
   event PodcastStarted(uint podcastId);
@@ -29,62 +29,80 @@ contract PodfiPodcast is PausableUpgradeable, ReentrancyGuardUpgradeable {
     _;
   }
 
-  /**
-   * @dev Modifier to check if the caller is a registered podcast creator.
-   */
   modifier onlyPodcastCreator(uint podcastId) {
     require(podcasts[podcastId].creator == msg.sender, "NOT_A_PODCAST_CREATOR");
     _;
   }
 
-  /**
-   * @dev Contract constructor. Sets the owner to the deployer's address.
-   */
-  constructor() {
+  function initialize() public initializer {
     admins[msg.sender] = true;
   }
 
-  /**
-   * @dev Function to get all ads on the platform
-   */
-  function getPodcasts() external view returns (Podcast[] memory) {
-    uint numPodcasts = ;
-    Podcast[] memory _podcasts = new Podcast[](adSize);
-    for (uint i = 0; i < numPodcasts; i++) {
-      _podcasts[i] = podcasts[i];
-    }
-    return _podcasts;
+  function addAdmin(address admin) public onlyAdmin {
+    admins[admin] = true;
   }
 
-  function startPodcast(string podcastId, string iceCandidates) {
-    if (podcasts[podcastId]) {
-      revert("Podcast ID taken!"):
+  function removeAdmin(address admin) public onlyAdmin {
+    admins[admin] = false;
+  }
+
+  function getPodcasts()
+    public
+    view
+    returns (
+      address[] memory creators,
+      string[] memory creatorIceCandidatesList,
+      PodcastStatus[] memory statuses,
+      address[][] memory allListeners
+    )
+  {
+    uint podcastCount = podcasts.length;
+    creators = new address[](podcastCount);
+    creatorIceCandidatesList = new string[](podcastCount);
+    statuses = new PodcastStatus[](podcastCount);
+    allListeners = new address[][](podcastCount);
+
+    for (uint i = 0; i < podcastCount; i++) {
+      Podcast storage podcast = podcasts[i];
+      creators[i] = podcast.creator;
+      creatorIceCandidatesList[i] = podcast.creatorIceCandidates;
+      statuses[i] = podcast.status;
+      allListeners[i] = podcast.listeners;
     }
 
-    Podcast storage _podcast = podcasts[podcastId];
+    return (creators, creatorIceCandidatesList, statuses, allListeners);
+  }
 
-    _podcast.creator = msg.sender;
-    _podcast.creatorIceCandidates = iceCandidates;
-    _podcast.status = PodcastStatus.Started;
+  function startPodcast(uint256 podcastId, string memory iceCandidates) external {
+    require(podcastId < podcasts.length, "Invalid podcast ID");
+    Podcast storage podcast = podcasts[podcastId];
+    require(podcast.creator == address(0), "Podcast ID taken!");
 
-    podcasts[podcastId] = _podcast;
+    podcast.creator = msg.sender;
+    podcast.creatorIceCandidates = iceCandidates;
+    podcast.status = PodcastStatus.Ongoing;
 
     emit PodcastStarted(podcastId);
   }
 
-  function joinPodcast(string podcastId, string iceCandidates) {
-    require(podcasts[podcastId], "PODCAST_NOT_FOUND");
-    require(podcasts[podcastId].status == PodcastStatus.Started, "PODCAST_NOT_STARTED");
+  function joinPodcast(uint256 podcastId, string memory iceCandidates) external {
+    require(podcastId < podcasts.length, "PODCAST_NOT_FOUND");
+    require(podcasts[podcastId].status == PodcastStatus.Ongoing, "PODCAST_NOT_ONGOING");
 
-    podcasts[podcastId].listenerIceCandidate[msg.sender] = iceCandidates;
+    Podcast storage podcast = podcasts[podcastId];
+    podcast.listenerIceCandidate[msg.sender] = iceCandidates;
+    podcast.listeners.push(msg.sender);
 
     emit PodcastParticipantJoined(podcastId, msg.sender, iceCandidates);
   }
 
-  function endPodcast(string podcastId) onlyPodcastCreator(podcastId) {
-    require(podcasts[podcastId].status == PodcastStatus.Started, "PODCAST_NOT_STARTED");
+  function endPodcast(uint256 podcastId) external onlyPodcastCreator(podcastId) {
+    require(podcastId < podcasts.length, "Invalid podcast ID");
+    require(podcasts[podcastId].status == PodcastStatus.Ongoing, "PODCAST_NOT_ONGOING");
 
-    Podcast storage _podcast = podcasts[podcastId];
-    _podcast.status = PodcastStatus.Ended;
+    Podcast storage podcast = podcasts[podcastId];
+    podcast.status = PodcastStatus.Ended;
+
+    emit PodcastEnded(podcastId);
   }
 }
