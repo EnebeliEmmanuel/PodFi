@@ -28,8 +28,17 @@ https://sepolia.etherscan.io/address/0x2BD0beAC473A5D443b2113c22d062135FED96d20#
 - CrossChainStaking
 https://sepolia.etherscan.io/address/0xe4d3579cC8D41A6b7403EF508f4d1Fc940F16842#code
 
-AutomatedFunctionsConsumer
+- AutomatedFunctionsConsumer
 https://sepolia.etherscan.io/address/0xF2784350B0e502a1d7bE0A13B425E3f84E2CE8e5#code
+
+- PodfiAdsMarketplace 
+https://sepolia.etherscan.io/address/0xD76e98B7eB3412957812956f46Fa2857cF8863B9
+
+- NativeToken
+https://sepolia.etherscan.io/address/0x79D0D8eb4E042Bb389706C58d4bfFe0797F46377
+
+- ExclusiveContentNFT
+https://sepolia.etherscan.io/address/0xb0Be9A7C457eCcd7b4E3f62166D6BA9392977fAA#code
 
 ### Cross-Chain NFTs with Chainlink CCIP
 
