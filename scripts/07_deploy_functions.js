@@ -1,4 +1,3 @@
-// scripts/deploy.js
 const { ethers } = require("hardhat")
 
 async function main() {
@@ -13,9 +12,9 @@ async function main() {
   const functionsConsumer = await FunctionsConsumer.deploy(router, donId)
 
   // Wait for the deployment to complete
-  await functionsConsumer.deployed()
+  await functionsConsumer.deploymentTransaction().wait()
 
-  console.log("FunctionsConsumer deployed to:", functionsConsumer.address)
+  console.log("FunctionsConsumer deployed to:", await functionsConsumer.getAddress())
 }
 
 main().catch((error) => {

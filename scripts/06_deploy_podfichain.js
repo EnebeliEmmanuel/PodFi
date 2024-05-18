@@ -1,4 +1,3 @@
-// scripts/deploy.js
 const { ethers } = require("hardhat")
 
 async function main() {
@@ -8,7 +7,7 @@ async function main() {
   const vrfCoordinator = "0xYourVrfCoordinatorAddress" // Replace with your VRF Coordinator address
   const linkToken = "0xYourLinkTokenAddress" // Replace with your LINK token address
   const keyHash = "0xYourKeyHash" // Replace with your key hash
-  const fee = ethers.utils.parseEther("0.1") // Replace with your fee
+  const fee = ethers.parseUnits("0.1", 18) // Replace with your fee
 
   // Get the contract factory
   const PodFiContract = await ethers.getContractFactory("PodFiContract")
@@ -18,9 +17,9 @@ async function main() {
   const podFiContract = await PodFiContract.deploy(name, symbol, vrfCoordinator, linkToken, keyHash, fee)
 
   // Wait for the deployment to complete
-  await podFiContract.deployed()
+  await podFiContract.deploymentTransaction().wait()
 
-  console.log("PodFiContract deployed to:", podFiContract.address)
+  console.log("PodFiContract deployed to:", await podFiContract.getAddress())
 }
 
 main().catch((error) => {

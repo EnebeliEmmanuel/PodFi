@@ -1,4 +1,3 @@
-// scripts/deploy.js
 const { ethers } = require("hardhat")
 
 async function main() {
@@ -13,9 +12,9 @@ async function main() {
   const crossChainStaking = await CrossChainStaking.deploy(ccipAddress, nativeTokenAddress)
 
   // Wait for the deployment to complete
-  await crossChainStaking.deployed()
+  await crossChainStaking.deploymentTransaction().wait()
 
-  console.log("CrossChainStaking deployed to:", crossChainStaking.address)
+  console.log("CrossChainStaking deployed to:", await crossChainStaking.getAddress())
 }
 
 main().catch((error) => {
