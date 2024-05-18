@@ -67,5 +67,8 @@
     "semi": false,
     "singleQuote": false,
     "printWidth": 120
+  },
+  "devDependencies": {
+    "@openzeppelin/hardhat-upgrades": "^3.1.0"
   }
 }

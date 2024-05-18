@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
+
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 
@@ -14,7 +15,7 @@ contract PodfiPodcast is PausableUpgradeable, ReentrancyGuardUpgradeable {
     string creatorIceCandidates;
     PodcastStatus status;
     mapping(address => string) listenerIceCandidate;
-    address[] listeners; // To keep track of listeners
+    address[] listeners;
   }
 
   Podcast[] public podcasts;
@@ -23,6 +24,8 @@ contract PodfiPodcast is PausableUpgradeable, ReentrancyGuardUpgradeable {
   event PodcastStarted(uint podcastId);
   event PodcastEnded(uint podcastId);
   event PodcastParticipantJoined(uint podcastId, address participant, string iceCandidates);
+  event AdminAdded(address admin);
+  event AdminRemoved(address admin);
 
   modifier onlyAdmin() {
     require(admins[msg.sender], "NOT_AN_ADMIN");
@@ -35,15 +38,19 @@ contract PodfiPodcast is PausableUpgradeable, ReentrancyGuardUpgradeable {
   }
 
   function initialize() public initializer {
+    __Pausable_init();
+    __ReentrancyGuard_init();
     admins[msg.sender] = true;
   }
 
   function addAdmin(address admin) public onlyAdmin {
     admins[admin] = true;
+    emit AdminAdded(admin);
   }
 
   function removeAdmin(address admin) public onlyAdmin {
     admins[admin] = false;
+    emit AdminRemoved(admin);
   }
 
   function getPodcasts()
@@ -73,7 +80,7 @@ contract PodfiPodcast is PausableUpgradeable, ReentrancyGuardUpgradeable {
     return (creators, creatorIceCandidatesList, statuses, allListeners);
   }
 
-  function startPodcast(uint256 podcastId, string memory iceCandidates) external {
+  function startPodcast(uint256 podcastId, string memory iceCandidates) external whenNotPaused nonReentrant {
     require(podcastId < podcasts.length, "Invalid podcast ID");
     Podcast storage podcast = podcasts[podcastId];
     require(podcast.creator == address(0), "Podcast ID taken!");
@@ -85,7 +92,7 @@ contract PodfiPodcast is PausableUpgradeable, ReentrancyGuardUpgradeable {
     emit PodcastStarted(podcastId);
   }
 
-  function joinPodcast(uint256 podcastId, string memory iceCandidates) external {
+  function joinPodcast(uint256 podcastId, string memory iceCandidates) external whenNotPaused nonReentrant {
     require(podcastId < podcasts.length, "PODCAST_NOT_FOUND");
     require(podcasts[podcastId].status == PodcastStatus.Ongoing, "PODCAST_NOT_ONGOING");
 
@@ -96,7 +103,7 @@ contract PodfiPodcast is PausableUpgradeable, ReentrancyGuardUpgradeable {
     emit PodcastParticipantJoined(podcastId, msg.sender, iceCandidates);
   }
 
-  function endPodcast(uint256 podcastId) external onlyPodcastCreator(podcastId) {
+  function endPodcast(uint256 podcastId) external onlyPodcastCreator(podcastId) whenNotPaused nonReentrant {
     require(podcastId < podcasts.length, "Invalid podcast ID");
     require(podcasts[podcastId].status == PodcastStatus.Ongoing, "PODCAST_NOT_ONGOING");
 
