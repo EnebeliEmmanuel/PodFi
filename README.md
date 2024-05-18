@@ -13,6 +13,18 @@ The PodFi Contract is an innovative solution designed to transform the world of 
 - **Augmented Reality Podcast Experiences**: Take podcasting to the next level with immersive AR features.
 - **SocialFi Integration**: Expand your reach by integrating with social media platforms, fostering a cross-platform community.
 
+- The podfiToken
+https://sepolia.etherscan.io/address/0xBe6A79866C06e1deF2332bC4EA512139cC376f59#code
+
+- Native token
+https://sepolia.etherscan.io/address/0x116C38f319F6ef17Fc14A4FFDfdDe3833A467912#code
+
+- FunctionsConsumer
+https://sepolia.etherscan.io/address/0x6D1D776b6af3B979B3a385064a9C1B56fd343D78#code
+
+- CCIPTokenRewards
+https://sepolia.etherscan.io/address/0x2BD0beAC473A5D443b2113c22d062135FED96d20#code
+
 ### Cross-Chain NFTs with Chainlink CCIP
 
 PodFi is forward-thinking, not just within the podcasting sphere but also in the broader blockchain ecosystem. By incorporating Chainlink's Cross-Chain Interoperability Protocol (CCIP), PodFi enables the seamless transfer of NFTs across different blockchain networks, enhancing the value and accessibility of your exclusive content.
