@@ -67,7 +67,7 @@ module.exports = {
   },
   contractSizer: {
     runOnCompile: false,
-    only: ["FunctionsConsumer", "AutomatedFunctionsConsumer", "FunctionsBillingRegistry"],
+    only: ["PodfiPodcast", "FunctionsConsumer", "AutomatedFunctionsConsumer", "FunctionsBillingRegistry"],
   },
   paths: {
     sources: "./contracts",
@@ -77,5 +77,8 @@ module.exports = {
   },
   mocha: {
     timeout: 200000, // 200 seconds max for running tests
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY || "",
   },
 }

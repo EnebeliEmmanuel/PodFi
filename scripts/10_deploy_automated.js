@@ -13,8 +13,24 @@ async function main() {
 
   // Wait for the deployment to complete
   await automatedFunctionsConsumer.deploymentTransaction().wait()
+  const address = await automatedFunctionsConsumer.getAddress()
 
-  console.log("AutomatedFunctionsConsumer deployed to:", await automatedFunctionsConsumer.getAddress())
+  console.log("AutomatedFunctionsConsumer deployed to:", address)
+  // Wait for Etherscan to recognize the contract (optional but recommended)
+  console.log("Waiting for Etherscan to recognize the contract...")
+  await new Promise((resolve) => setTimeout(resolve, 60000)) // Wait 1 minute
+
+  // Verify the contract on Etherscan
+  console.log("Verifying contract on Etherscan...")
+  try {
+    await run("verify:verify", {
+      address: address,
+      constructorArguments: [router, donId],
+    })
+    console.log("Contract verified successfully!")
+  } catch (error) {
+    console.error("Verification failed:", error)
+  }
 }
 
 main().catch((error) => {
