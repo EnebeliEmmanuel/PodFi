@@ -28,6 +28,9 @@ https://sepolia.etherscan.io/address/0x2BD0beAC473A5D443b2113c22d062135FED96d20#
 - CrossChainStaking
 https://sepolia.etherscan.io/address/0xe4d3579cC8D41A6b7403EF508f4d1Fc940F16842#code
 
+AutomatedFunctionsConsumer
+https://sepolia.etherscan.io/address/0xF2784350B0e502a1d7bE0A13B425E3f84E2CE8e5#code
+
 ### Cross-Chain NFTs with Chainlink CCIP
 
 PodFi is forward-thinking, not just within the podcasting sphere but also in the broader blockchain ecosystem. By incorporating Chainlink's Cross-Chain Interoperability Protocol (CCIP), PodFi enables the seamless transfer of NFTs across different blockchain networks, enhancing the value and accessibility of your exclusive content.
