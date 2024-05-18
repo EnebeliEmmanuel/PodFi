@@ -1,4 +1,3 @@
-// scripts/deploy.js
 const { ethers } = require("hardhat")
 
 async function main() {
@@ -13,9 +12,9 @@ async function main() {
   const ccipTokenRewards = await CCIPTokenRewards.deploy(ccipAddress, nativeTokenAddress)
 
   // Wait for the deployment to complete
-  await ccipTokenRewards.deployed()
+  await ccipTokenRewards.deploymentTransaction().wait()
 
-  console.log("CCIPTokenRewards deployed to:", ccipTokenRewards.address)
+  console.log("CCIPTokenRewards deployed to:", await ccipTokenRewards.getAddress())
 }
 
 main().catch((error) => {

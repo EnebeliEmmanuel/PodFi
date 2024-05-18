@@ -1,4 +1,3 @@
-// scripts/deploy.js
 const { ethers, upgrades } = require("hardhat")
 
 async function main() {
@@ -10,9 +9,9 @@ async function main() {
   const podfiAdsMarketplace = await upgrades.deployProxy(PodfiAdsMarketplace, [], { initializer: "initialize" })
 
   // Wait for the deployment to complete
-  await podfiAdsMarketplace.deployed()
+  await podfiAdsMarketplace.deploymentTransaction().wait()
 
-  console.log("PodfiAdsMarketplace deployed to:", podfiAdsMarketplace.address)
+  console.log("PodfiAdsMarketplace deployed to:", await podfiAdsMarketplace.getAddress())
 }
 
 main().catch((error) => {

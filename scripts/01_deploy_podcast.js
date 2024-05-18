@@ -10,9 +10,9 @@ async function main() {
   const podfiPodcast = await upgrades.deployProxy(PodfiPodcast, [], { initializer: "initialize" })
 
   // Wait for the deployment to complete
-  await podfiPodcast.deployed()
+  await podfiPodcast.deploymentTransaction().wait()
 
-  console.log("PodfiPodcast deployed to:", podfiPodcast.address)
+  console.log("PodfiPodcast deployed to:", await podfiPodcast.getAddress())
 }
 
 main().catch((error) => {
