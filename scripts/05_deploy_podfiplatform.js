@@ -23,9 +23,8 @@ async function main() {
   )
 
   // Wait for the deployment to complete
-  await podFiPlatform.deployed()
-
-  console.log("PodFiPlatform deployed to:", podFiPlatform.address)
+  await podFiPlatform.deploymentTransaction().wait()
+  console.log("PodFiPlatform deployed to:", await podFiPlatform.getAddress())
 }
 
 main().catch((error) => {

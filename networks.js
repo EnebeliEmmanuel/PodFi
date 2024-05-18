@@ -29,6 +29,11 @@ if (SECOND_PRIVATE_KEY) {
 }
 
 const networks = {
+  sepolia: {
+    url: `https://rpc.ankr.com/eth_sepolia`,
+    accounts: [PRIVATE_KEY],
+  },
+
   ethereum: {
     url: process.env.ETHEREUM_RPC_URL || "UNSET",
     gasPrice: undefined,

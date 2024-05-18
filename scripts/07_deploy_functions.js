@@ -1,8 +1,8 @@
 const { ethers } = require("hardhat")
 
 async function main() {
-  const router = "0xYourRouterAddress" // Replace with your Chainlink router address
-  const donId = "0xYourDonId" // Replace with your DON ID
+  const router = "0xb83E47C2bC239B3bf370bc41e1459A34b41238D0" // Replace with your Chainlink router address
+  const donId = "0x66756e2d657468657265756d2d7365706f6c69612d3100000000000000000000" // Replace with your DON ID
 
   // Get the contract factory
   const FunctionsConsumer = await ethers.getContractFactory("FunctionsConsumer")

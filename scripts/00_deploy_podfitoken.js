@@ -1,5 +1,6 @@
 // scripts/deploy.js
 const hre = require("hardhat")
+const fs = require("fs")
 
 async function main() {
   const initialSupply = hre.ethers.parseUnits("1000000", 18) // 1,000,000 POD with 18 decimals
@@ -8,7 +9,11 @@ async function main() {
 
   await podFiToken.waitForDeployment()
 
-  console.log("PodFiToken deployed to:", await podFiToken.getAddress())
+  const address = await await podFiToken.getAddress()
+  console.log("NativeToken deployed to:", address)
+
+  // Save the contract address to a file
+  fs.writeFileSync("podFiToken.txt", address)
 }
 
 main().catch((error) => {
