@@ -25,12 +25,7 @@ async function main() {
     vrfCoordinator,
     linkToken,
     keyHash,
-    fee,
-    {
-      maxFeePerGas: feeData.maxFeePerGas, // Use the retrieved maxFeePerGas
-      maxPriorityFeePerGas: feeData.maxPriorityFeePerGas,
-      gasLimit: gasLimit, // Explicitly set the gas limit
-    }
+    fee
   )
 
   // Wait for the deployment to complete

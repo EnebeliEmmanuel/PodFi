@@ -24,7 +24,23 @@ async function main() {
 
   // Wait for the deployment to complete
   await podFiPlatform.deploymentTransaction().wait()
-  console.log("PodFiPlatform deployed to:", await podFiPlatform.getAddress())
+  const address = await podFiPlatform.getAddress()
+  console.log("PodFiPlatform deployed to:", address)
+  // Wait for Etherscan to recognize the contract (optional but recommended)
+  console.log("Waiting for Etherscan to recognize the contract...")
+  await new Promise((resolve) => setTimeout(resolve, 60000)) // Wait 1 minute
+
+  // Verify the contract on Etherscan
+  console.log("Verifying contract on Etherscan...")
+  try {
+    await run("verify:verify", {
+      address: address,
+      constructorArguments: [nativeTokenAddress, exclusiveContentAddress, stakingDuration, rewardAmount.toString()],
+    })
+    console.log("Contract verified successfully!")
+  } catch (error) {
+    console.error("Verification failed:", error)
+  }
 }
 
 main().catch((error) => {
